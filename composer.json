@@ -17,6 +17,7 @@
     ],
     "require": {
         "kambalabs/kmb-base": "dev-master",
+        "kambalabs/kmb-domain": "dev-master",
         "zf-commons/zfc-rbac": "2.4.*"
     },
     "require-dev": {

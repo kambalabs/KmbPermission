@@ -23,13 +23,28 @@ return [
             'ZfcRbac\Role\InMemoryRoleProvider' => [
                 'root' => [
                     'children' => ['admin'],
+                    'permissions' => ['manageAllEnv']
                 ],
                 'admin' => [
                     'children' => ['user'],
+                    'permissions' => ['manageEnv', 'manageEnvChildren']
                 ],
                 'user' => [
+                    'permissions' => ['readEnv']
                 ],
             ],
+        ],
+        'assertion_manager' => [
+            'invokables' => [
+                'mustBeAdminAssignedToAncestor' => 'KmbPermission\Assertion\MustBeAdminAssignedToAncestor',
+                'mustBeAdminAssignedToEnvironment' => 'KmbPermission\Assertion\MustBeAdminAssignedToEnvironment',
+                'mustBeAssignedToChildOrAncestor' => 'KmbPermission\Assertion\MustBeAssignedToChildOrAncestor',
+            ]
+        ],
+        'assertion_map' => [
+            'manageEnv' => 'mustBeAdminAssignedToAncestor',
+            'manageEnvChildren' => 'mustBeAdminAssignedToEnvironment',
+            'readEnv' => 'mustBeAssignedToChildOrAncestor',
         ],
         /**
          * Various plugin managers for guards and role providers. Each of them must follow a common
