@@ -43,7 +43,7 @@ class MustBeAdminAssignedToEnvironment implements AssertionInterface
             return false;
         }
 
-        if ($authorizationService->isGranted('manageAllEnv')) {
+        if ($authorizationService->isGranted('manageAllEnv', $context) || $authorizationService->isGranted('manageEnv', $context)) {
             return true;
         }
 

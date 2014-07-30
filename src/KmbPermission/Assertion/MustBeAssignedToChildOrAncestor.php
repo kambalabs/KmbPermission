@@ -39,16 +39,21 @@ class MustBeAssignedToChildOrAncestor implements AssertionInterface
         /** @var UserInterface $identity */
         $identity = $authorizationService->getIdentity();
 
-        if ($authorizationService->isGranted('manageEnv') || $authorizationService->isGranted('manageEnvChildren')) {
+        /** @var EnvironmentInterface $context */
+        if ($context->hasUser($identity) || $authorizationService->isGranted('manageEnv', $context)) {
             return true;
         }
 
-        /** @var EnvironmentInterface $context */
-        if (!$context->hasParent()) {
+        if (!$context->hasChildren()) {
             return false;
         }
 
-        $parent = $context->getParent();
-        return $parent->hasUser($identity);
+        $children = $context->getChildren();
+        foreach ($children as $child) {
+            if ($authorizationService->isGranted('readEnv', $child)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

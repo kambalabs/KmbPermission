@@ -26,6 +26,9 @@
     },
     "minimum-stability": "dev",
     "autoload": {
+        "psr-0": {
+            "KmbPermission": "src/"
+        },
         "classmap": [
             "./Module.php"
         ]
