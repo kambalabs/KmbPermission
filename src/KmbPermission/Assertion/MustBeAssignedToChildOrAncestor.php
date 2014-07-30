@@ -44,13 +44,39 @@ class MustBeAssignedToChildOrAncestor implements AssertionInterface
             return true;
         }
 
-        if (!$context->hasChildren()) {
+        return $this->canReadOneAncestor($identity, $context) || $this->canReadAtLeastOneChild($identity, $context);
+    }
+
+    /**
+     * @param UserInterface $identity
+     * @param EnvironmentInterface $environment
+     * @return bool
+     */
+    protected function canReadOneAncestor($identity, $environment)
+    {
+        if (!$environment->hasParent()) {
             return false;
         }
+        if ($environment->getParent()->hasUser($identity)) {
+            return true;
+        }
+        return $this->canReadOneAncestor($identity, $environment->getParent());
+    }
 
-        $children = $context->getChildren();
+    /**
+     * @param UserInterface $identity
+     * @param EnvironmentInterface $environment
+     * @return bool
+     */
+    protected function canReadAtLeastOneChild($identity, $environment)
+    {
+        if (!$environment->hasChildren()) {
+            return false;
+        }
+        $children = $environment->getChildren();
         foreach ($children as $child) {
-            if ($authorizationService->isGranted('readEnv', $child)) {
+            /** @var EnvironmentInterface $child */
+            if ($child->hasUser($identity) || $this->canReadAtLeastOneChild($identity, $child)) {
                 return true;
             }
         }
