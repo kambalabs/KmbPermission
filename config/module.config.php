@@ -1,5 +1,13 @@
 <?php
 return [
+    'service_manager' => [
+        'invokables' => [
+            'KmbPermission\Service\Environment' => 'KmbPermission\Service\Environment',
+        ],
+        'delegators' => [
+            'KmbPermission\Service\Environment' => ['ZfcRbac\Factory\AuthorizationServiceDelegatorFactory'],
+        ],
+    ],
     'view_manager' => [
         'template_map' => [
             'error/403' => __DIR__ . '/../view/error/403.phtml',
