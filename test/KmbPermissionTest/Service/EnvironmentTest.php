@@ -23,6 +23,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $this->authorizationService = $this->getMock('KmbPermissionTest\Service\AuthorizationService');
         $this->environmentService = new Service\Environment();
         $this->environmentService->setAuthorizationService($this->authorizationService);
+        $this->environmentService->setEnvironmentRepository($this->environmentRepository);
     }
 
     /** @test */

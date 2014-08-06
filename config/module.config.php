@@ -1,8 +1,8 @@
 <?php
 return [
     'service_manager' => [
-        'invokables' => [
-            'KmbPermission\Service\Environment' => 'KmbPermission\Service\Environment',
+        'factories' => [
+            'KmbPermission\Service\Environment' => 'KmbPermission\Service\EnvironmentFactory',
         ],
         'delegators' => [
             'KmbPermission\Service\Environment' => ['ZfcRbac\Factory\AuthorizationServiceDelegatorFactory'],

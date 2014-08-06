@@ -31,6 +31,9 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
     /** @var AuthorizationService */
     protected $authorizationService;
 
+    /** @var Model\EnvironmentRepositoryInterface */
+    protected $environmentRepository;
+
     /**
      * Get all readable environments (for non root users).
      * Return an empty array for root users : means all environments.
@@ -53,7 +56,7 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
         } else {
             /** @var Model\UserInterface $user */
             $user = $this->authorizationService->getIdentity();
-            $firstLevelEnvironments = $user->getEnvironments();
+            $firstLevelEnvironments = $this->environmentRepository->getAllForUser($user);
             if (empty($firstLevelEnvironments)) {
                 throw new UnauthorizedException();
             }
@@ -79,5 +82,27 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
     public function setAuthorizationService(AuthorizationService $authorizationService)
     {
         $this->authorizationService = $authorizationService;
+    }
+
+    /**
+     * Set EnvironmentRepository.
+     *
+     * @param \KmbDomain\Model\EnvironmentRepositoryInterface $environmentRepository
+     * @return Environment
+     */
+    public function setEnvironmentRepository($environmentRepository)
+    {
+        $this->environmentRepository = $environmentRepository;
+        return $this;
+    }
+
+    /**
+     * Get EnvironmentRepository.
+     *
+     * @return \KmbDomain\Model\EnvironmentRepositoryInterface
+     */
+    public function getEnvironmentRepository()
+    {
+        return $this->environmentRepository;
     }
 }
