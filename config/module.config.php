@@ -35,7 +35,7 @@ return [
                 ],
                 'admin' => [
                     'children' => ['user'],
-                    'permissions' => ['manageEnv', 'manageEnvChildren']
+                    'permissions' => ['assignServersToEnv', 'manageEnv', 'manageEnvChildren']
                 ],
                 'user' => [
                     'permissions' => ['readEnv']

@@ -36,15 +36,15 @@ class MustBeAdminAssignedToAncestor implements AssertionInterface
      */
     public function assert(AuthorizationService $authorizationService, $context = null)
     {
+        if ($authorizationService->isGranted('manageAllEnv')) {
+            return true;
+        }
+
         /** @var UserInterface $identity */
         $identity = $authorizationService->getIdentity();
 
-        if ($identity->getRole() === UserInterface::ROLE_USER) {
+        if ($identity->getRole() === UserInterface::ROLE_USER || $context === null) {
             return false;
-        }
-
-        if ($authorizationService->isGranted('manageAllEnv')) {
-            return true;
         }
 
         /** @var EnvironmentInterface $context */
