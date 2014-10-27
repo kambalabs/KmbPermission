@@ -25,7 +25,7 @@ use KmbDomain\Model\UserInterface;
 use ZfcRbac\Assertion\AssertionInterface;
 use ZfcRbac\Service\AuthorizationService;
 
-class MustBeAdminAssignedToEnvironment implements AssertionInterface
+class MustBeAdminAssignedToEnvironmentOrAncestor implements AssertionInterface
 {
     /**
      * Check if this assertion is true
@@ -36,6 +36,7 @@ class MustBeAdminAssignedToEnvironment implements AssertionInterface
      */
     public function assert(AuthorizationService $authorizationService, $context = null)
     {
+        /** @var EnvironmentInterface $context */
         /** @var UserInterface $identity */
         $identity = $authorizationService->getIdentity();
 
@@ -43,11 +44,16 @@ class MustBeAdminAssignedToEnvironment implements AssertionInterface
             return false;
         }
 
-        if ($authorizationService->isGranted('manageAllEnv', $context) || $authorizationService->isGranted('manageEnv', $context)) {
+        if ($authorizationService->isGranted('manageAllEnv', $context) || $context->hasUser($identity)) {
             return true;
         }
 
-        /** @var EnvironmentInterface $context */
-        return $context->hasUser($identity);
+        if (!$context->hasParent()) {
+            return false;
+        }
+
+        $parent = $context->getParent();
+        return $parent->hasUser($identity) || $authorizationService->isGranted('manageEnv', $parent);
+
     }
 }

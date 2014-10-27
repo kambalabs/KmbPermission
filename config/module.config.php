@@ -35,7 +35,7 @@ return [
                 ],
                 'admin' => [
                     'children' => ['user'],
-                    'permissions' => ['assignServersToEnv', 'manageEnv', 'manageEnvChildren']
+                    'permissions' => ['assignServersToEnv', 'manageEnv']
                 ],
                 'user' => [
                     'permissions' => ['readEnv']
@@ -44,14 +44,12 @@ return [
         ],
         'assertion_manager' => [
             'invokables' => [
-                'mustBeAdminAssignedToAncestor' => 'KmbPermission\Assertion\MustBeAdminAssignedToAncestor',
-                'mustBeAdminAssignedToEnvironment' => 'KmbPermission\Assertion\MustBeAdminAssignedToEnvironment',
+                'mustBeAdminAssignedToEnvironmentOrAncestor' => 'KmbPermission\Assertion\MustBeAdminAssignedToEnvironmentOrAncestor',
                 'mustBeAssignedToChildOrAncestor' => 'KmbPermission\Assertion\MustBeAssignedToChildOrAncestor',
             ]
         ],
         'assertion_map' => [
-            'manageEnv' => 'mustBeAdminAssignedToAncestor',
-            'manageEnvChildren' => 'mustBeAdminAssignedToEnvironment',
+            'manageEnv' => 'mustBeAdminAssignedToEnvironmentOrAncestor',
             'readEnv' => 'mustBeAssignedToChildOrAncestor',
         ],
         /**
