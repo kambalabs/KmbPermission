@@ -26,7 +26,7 @@ return [
         ],
     ],
     'zfc_rbac' => [
-        'protection_policy' => \ZfcRbac\Guard\GuardInterface::POLICY_DENY,
+        'protection_policy' => \ZfcRbac\Guard\GuardInterface::POLICY_ALLOW,
         'role_provider' => [
             'ZfcRbac\Role\InMemoryRoleProvider' => [
                 'root' => [
