@@ -44,8 +44,12 @@ class MustBeAdminAssignedToEnvironmentOrAncestor implements AssertionInterface
             return false;
         }
 
-        if ($authorizationService->isGranted('manageAllEnv', $context) || $context->hasUser($identity)) {
+        if ($authorizationService->isGranted('manageAllEnv', $context) || ($context != null && $context->hasUser($identity))) {
             return true;
+        }
+
+        if ($context == null) {
+            return false;
         }
 
         if (!$context->hasParent()) {
