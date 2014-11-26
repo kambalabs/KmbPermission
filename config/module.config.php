@@ -3,6 +3,7 @@ return [
     'service_manager' => [
         'factories' => [
             'KmbPermission\Service\Environment' => 'KmbPermission\Service\EnvironmentFactory',
+            'KmbPermission\Listener\NavigationRbacListener' => 'KmbPermission\Listener\NavigationRbacListenerFactory',
         ],
         'delegators' => [
             'KmbPermission\Service\Environment' => ['ZfcRbac\Factory\AuthorizationServiceDelegatorFactory'],

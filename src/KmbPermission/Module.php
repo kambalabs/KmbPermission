@@ -24,21 +24,32 @@ use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\Mvc\Application;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface, BootstrapListenerInterface
 {
     /**
      * Listen to the bootstrap event
      *
-     * @param EventInterface $e
+     * @param EventInterface $event
      * @return array
      */
-    public function onBootstrap(EventInterface $e)
+    public function onBootstrap(EventInterface $event)
     {
-        $target = $e->getTarget();
+        /** @var Application $application */
+        $application        = $event->getApplication();
+        $serviceManager = $application->getServiceManager();
+        $eventManager       = $application->getEventManager();
+        $sharedEventManager = $eventManager->getSharedManager();
 
-        $target->getEventManager()->attach(
-            $target->getServiceManager()->get('ZfcRbac\View\Strategy\UnauthorizedStrategy')
+        $eventManager->attach(
+            $serviceManager->get('ZfcRbac\View\Strategy\UnauthorizedStrategy')
+        );
+
+        $sharedEventManager->attach(
+            'Zend\View\Helper\Navigation\AbstractHelper',
+            'isAllowed',
+            [$serviceManager->get('KmbPermission\Listener\NavigationRbacListener'), 'isAllowed']
         );
     }
 
