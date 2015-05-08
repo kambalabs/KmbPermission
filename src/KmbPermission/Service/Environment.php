@@ -21,6 +21,7 @@
 namespace KmbPermission\Service;
 
 use KmbDomain\Model;
+use KmbDomain\Service\EnvironmentRepositoryInterface;
 use Zend\Stdlib\ArrayUtils;
 use ZfcRbac\Exception\UnauthorizedException;
 use ZfcRbac\Service\AuthorizationService;
@@ -31,7 +32,7 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
     /** @var AuthorizationService */
     protected $authorizationService;
 
-    /** @var Model\EnvironmentRepositoryInterface */
+    /** @var EnvironmentRepositoryInterface */
     protected $environmentRepository;
 
     /**
@@ -87,7 +88,7 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
     /**
      * Set EnvironmentRepository.
      *
-     * @param \KmbDomain\Model\EnvironmentRepositoryInterface $environmentRepository
+     * @param \KmbDomain\Service\EnvironmentRepositoryInterface $environmentRepository
      * @return Environment
      */
     public function setEnvironmentRepository($environmentRepository)
@@ -99,7 +100,7 @@ class Environment implements AuthorizationServiceAwareInterface, EnvironmentInte
     /**
      * Get EnvironmentRepository.
      *
-     * @return \KmbDomain\Model\EnvironmentRepositoryInterface
+     * @return \KmbDomain\Service\EnvironmentRepositoryInterface
      */
     public function getEnvironmentRepository()
     {
